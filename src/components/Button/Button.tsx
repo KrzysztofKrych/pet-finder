@@ -8,7 +8,10 @@ interface IProps {
 }
 
 export const Button = ({ text, variant, onClick }: IProps) => (
-  <button className={BUTTON_VARIANTS[variant]} onClick={onClick}>
+  <button
+    className={`${BUTTON_VARIANTS[variant]} cursor-pointer`}
+    onClick={onClick}
+  >
     {text}
   </button>
 );
