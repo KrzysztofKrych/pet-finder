@@ -1,6 +1,6 @@
-import './App.css'
-import { Button } from './components/Button/Button'
-import { ButtonVariant } from './components/Button/enums'
+import './App.css';
+import { Button } from './components/Button/Button';
+import { ButtonVariant } from './components/Button/enums';
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <Button text="PRIMARY" variant={ButtonVariant.PRIMARY} />
       <Button text="ERROR" variant={ButtonVariant.ERROR} />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
