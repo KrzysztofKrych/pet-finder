@@ -1,9 +1,11 @@
-import { ButtonVariant } from "./enums";
-import { BUTTON_VARIANTS } from "./variants";
+import { ButtonVariant } from './enums';
+import { BUTTON_VARIANTS } from './variants';
 
 interface Props {
-    text: string;
-    variant: ButtonVariant;
+  text: string;
+  variant: ButtonVariant;
 }
 
-export const Button = ({ text, variant }: Props) => <button className={BUTTON_VARIANTS[variant]}>{text}</button>;
+export const Button = ({ text, variant }: Props) => (
+  <button className={BUTTON_VARIANTS[variant]}>{text}</button>
+);
