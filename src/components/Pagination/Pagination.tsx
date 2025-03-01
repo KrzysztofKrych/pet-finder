@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { NotificationComponentVariant } from '../NotificationComponent/enums';
+import { useNotificationStore } from '../../store/useNotificationStore/useNotificationStore';
 
 interface IProps {
   currentPage: number;
@@ -15,6 +17,7 @@ export const Pagination = ({
   onClickNextPage,
   handlePageJump,
 }: IProps) => {
+  const { handleOpenNotification } = useNotificationStore();
   const [inputPage, setInputPage] = useState<number>(currentPage);
   return (
     <div className="flex justify-center items-center mt-6 gap-4">
@@ -38,7 +41,18 @@ export const Pagination = ({
         <input
           type="number"
           value={inputPage}
-          onChange={(e) => setInputPage(Number(e.target.value))}
+          onChange={(e) => {
+            const value = Number(e.target.value);
+
+            if (value <= totalPages) {
+              setInputPage(value);
+            } else {
+              handleOpenNotification({
+                message: `The page number you entered exceeds the maximum allowed value. Please enter a number between 1 and ${totalPages}.`,
+                variant: NotificationComponentVariant.ERROR,
+              });
+            }
+          }}
           onKeyDown={(e) => e.key === 'Enter' && handlePageJump(inputPage)}
           placeholder="Jump to..."
           className="w-20 px-2 py-1 border border-gray-300 rounded text-center"

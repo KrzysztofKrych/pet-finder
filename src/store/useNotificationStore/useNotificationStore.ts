@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { DEFAULT_NOTIFICATION_STATE } from './consts';
 import { NotificationState, OpenNotificationParams } from './interfaces';
+import { NotificationComponentVariant } from '../../components/NotificationComponent/enums';
 
 export const useNotificationStore = create<NotificationState>((set) => ({
   ...DEFAULT_NOTIFICATION_STATE,
@@ -8,8 +9,8 @@ export const useNotificationStore = create<NotificationState>((set) => ({
   reset: () => set(DEFAULT_NOTIFICATION_STATE),
   handleOpenNotification: ({
     message,
-    variant,
-    autoHideDuration,
+    variant = NotificationComponentVariant.SUCCESS,
+    autoHideDuration = 5000,
   }: OpenNotificationParams) =>
     set((state: NotificationState) => ({
       ...state,
