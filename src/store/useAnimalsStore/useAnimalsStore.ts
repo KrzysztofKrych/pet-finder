@@ -1,9 +1,25 @@
 import { create } from 'zustand';
 import { DEFAULT_ANIMALS_STATE } from './consts';
 import { AnimalsState } from './interfaces';
-import { IAnimal } from '../../api/petFinder/animals/interfaces';
+import { getAnimals } from '../../api/petFinder/animals/getAnimals';
 
-export const useAnimalsStore = create<AnimalsState>((set) => ({
+export const useAnimalsStore = create<AnimalsState>((set, get) => ({
   ...DEFAULT_ANIMALS_STATE,
-  handleSetAnimals: (animals: IAnimal[]) => set(() => ({ animals })),
+
+  handleGetAnimals: async () => {
+    const state = get();
+    const { animals, pagination } = await getAnimals(
+      state.filters,
+      state.currentPage
+    );
+    set(() => ({ animals, totalPages: pagination.total_pages }));
+  },
+  handleSetCurrentPage: async (currentPage: number) => {
+    const state = get();
+    const { animals, pagination } = await getAnimals(
+      state.filters,
+      currentPage
+    );
+    set(() => ({ currentPage, animals, totalPages: pagination.total_pages }));
+  },
 }));

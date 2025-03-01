@@ -15,7 +15,7 @@ export const setLocalStorageValueWithExpiry = (
   const now = new Date();
   const item = {
     value,
-    expiry: now.getTime() + ttl,
+    expiry: now.getTime() + ttl * 1000,
   };
   setLocalStorageValue(key, item);
 };

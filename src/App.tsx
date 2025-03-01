@@ -1,52 +1,32 @@
-import { requestAccessToken } from './api/petFinder/auth/accessToken';
-import { getAnimals } from './api/petFinder/animals/getAnimals';
 import './App.css';
-import { Button } from './components/Button/Button';
-import { ButtonVariant } from './components/Button/enums';
 import { NotificationComponent } from './components/NotificationComponent/NotificationComponent';
-import { useNotificationStore } from './store/useNotificationStore/useNotificationStore';
-import { NotificationComponentVariant } from './components/NotificationComponent/enums';
 import { useAnimalsStore } from './store/useAnimalsStore/useAnimalsStore';
 import { useEffect } from 'react';
-import { AnimalCard } from './components/AnimalCard/AnimalCard';
+import { AnimalsCardContainer } from './components/AnimalsCardContainer/AnimalsCardContainer';
+import { Pagination } from './components/Pagination/Pagination';
 
 function App() {
-  const { handleOpenNotification } = useNotificationStore();
-  const { handleSetAnimals, animals } = useAnimalsStore();
+  const {
+    handleGetAnimals,
+    animals,
+    currentPage,
+    handleSetCurrentPage,
+    totalPages,
+  } = useAnimalsStore();
 
   useEffect(() => {
-    const getAnimalsAction = async () => {
-      const animals = await getAnimals();
-      handleSetAnimals(animals);
-    };
-    getAnimalsAction();
-  }, []);
+    handleGetAnimals();
+  }, [handleGetAnimals]);
   return (
     <>
-      <Button
-        text="token"
-        variant={ButtonVariant.PRIMARY}
-        onClick={() => requestAccessToken()}
+      <AnimalsCardContainer animals={animals} />
+      <Pagination
+        handlePageJump={(newPage) => handleSetCurrentPage(newPage)}
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onClickPrevPage={() => handleSetCurrentPage(currentPage - 1)}
+        onClickNextPage={() => handleSetCurrentPage(currentPage + 1)}
       />
-      <Button
-        text="animals"
-        variant={ButtonVariant.ERROR}
-        onClick={() => undefined}
-      />
-      <Button
-        text="notification"
-        variant={ButtonVariant.ERROR}
-        onClick={() =>
-          handleOpenNotification({
-            message: 'testMESSAGE',
-            variant: NotificationComponentVariant.SUCCESS,
-            autoHideDuration: 5000,
-          })
-        }
-      />
-      {animals.map((animal, index) => (
-        <AnimalCard animal={animal} key={index} />
-      ))}
       <NotificationComponent />
     </>
   );

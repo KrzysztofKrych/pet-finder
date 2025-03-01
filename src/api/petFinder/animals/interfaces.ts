@@ -57,16 +57,16 @@ export interface IAttributes {
 }
 
 export interface IBreeds {
-  primary: string;
-  secondary: null | string;
+  primary: string | null;
+  secondary: string | null;
   mixed: boolean;
   unknown: boolean;
 }
 
 export interface IColors {
-  primary: null | string;
-  secondary: null | string;
-  tertiary: null | string;
+  primary: string | null;
+  secondary: string | null;
+  tertiary: string | null;
 }
 
 export interface IContact {
@@ -95,4 +95,10 @@ export interface IPhoto {
   medium: string;
   large: string;
   full: string;
+}
+
+export interface IAnimalFilters {
+  type: string;
+  breed: string;
+  color: string;
 }
