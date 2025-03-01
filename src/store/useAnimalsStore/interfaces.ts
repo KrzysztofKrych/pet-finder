@@ -1,7 +1,14 @@
-import { IAnimal } from '../../api/petFinder/animals/interfaces';
+import {
+  IAnimal,
+  IAnimalFilters as IAnimalFilters,
+} from '../../api/petFinder/animals/interfaces';
 
 export interface AnimalsState {
   animals: IAnimal[];
+  filters: IAnimalFilters;
+  currentPage: number;
+  totalPages: number;
 
-  handleSetAnimals: (animals: IAnimal[]) => void;
+  handleGetAnimals: () => void;
+  handleSetCurrentPage: (currentPage: number) => void;
 }

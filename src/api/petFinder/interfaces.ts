@@ -3,7 +3,6 @@ export interface Pagination {
   total_count: number;
   current_page: number;
   total_pages: number;
-  _links: PaginationLinks;
 }
 
 export interface PaginationLinks {

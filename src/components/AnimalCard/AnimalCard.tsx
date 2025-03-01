@@ -1,6 +1,8 @@
 import { IAnimal } from '../../api/petFinder/animals/interfaces';
 import { Mail } from 'lucide-react';
 import { PLACEHOLDER_IMAGE } from './consts';
+import { Attribute } from '../Attribute/Attribute';
+import { AttributeVariant } from '../Attribute/enums';
 
 interface IProps {
   animal: IAnimal;
@@ -24,15 +26,12 @@ export const AnimalCard = ({ animal }: IProps) => {
         </p>
 
         <div className="flex flex-wrap gap-2 mt-2">
-          <span className="px-3 py-1 bg-blue-100 text-blue-600 text-xs font-medium rounded-full">
-            {animal.age}
-          </span>
-          <span className="px-3 py-1 bg-green-100 text-green-600 text-xs font-medium rounded-full">
-            {animal.gender}
-          </span>
-          <span className="px-3 py-1 bg-purple-100 text-purple-600 text-xs font-medium rounded-full">
-            {animal.size}
-          </span>
+          <Attribute text={animal.age} variant={AttributeVariant.PRIMARY} />
+          <Attribute
+            text={animal.gender}
+            variant={AttributeVariant.SECONDARY}
+          />
+          <Attribute text={animal.size} variant={AttributeVariant.INFO} />
         </div>
 
         <div className="mt-4 flex justify-between items-center">
