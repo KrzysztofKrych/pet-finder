@@ -1,30 +1,38 @@
 import { X } from 'lucide-react';
 import { IAnimalFilters } from '../../api/petFinder/animals/interfaces';
 import { useAnimalsStore } from '../../store/useAnimalsStore/useAnimalsStore';
-import { AnimalFilterType } from './enums';
+import { filtersConfig } from './helpers';
+import { getOptionsForKey } from './helpers';
 
 export const AnimalFilters = () => {
-  const { filters, handleChangeFilter, handleRemoveFilter, animalsTypes } =
-    useAnimalsStore();
+  const {
+    filters,
+    handleChangeFilter,
+    handleRemoveFilter,
+    animalsTypes,
+    selectedType,
+  } = useAnimalsStore();
 
   return (
     <>
       <div className="bg-white p-4 rounded-xl flex flex-wrap gap-4 justify-center">
-        <select
-          className="p-2 border rounded-lg"
-          value={filters[AnimalFilterType.TYPE]}
-          onChange={(e) =>
-            handleChangeFilter(AnimalFilterType.TYPE, e.target.value)
-          }
-        >
-          <option value="">Select Type</option>
-
-          {animalsTypes.map((type, index) => (
-            <option key={index} value={type.name}>
-              {type.name}
-            </option>
-          ))}
-        </select>
+        {filtersConfig.map(({ key, label, options }) => (
+          <select
+            key={key}
+            className="p-2 border rounded-lg"
+            value={filters[key]}
+            onChange={(e) => handleChangeFilter(key, e.target.value)}
+          >
+            <option value="">{`Select ${label}`}</option>
+            {options(getOptionsForKey(key, animalsTypes, selectedType)).map(
+              (option, index) => (
+                <option key={index} value={option}>
+                  {option}
+                </option>
+              )
+            )}
+          </select>
+        ))}
       </div>
 
       <div className="flex gap-2 justify-center my-3">

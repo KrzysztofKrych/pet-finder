@@ -20,6 +20,7 @@ export interface IAnimalType {
   name: string;
   coats: string[];
   colors: string[];
+  genders: string[];
 }
 
 export interface IAnimal {
@@ -108,6 +109,7 @@ export interface IPhoto {
 
 export interface IAnimalFilters {
   type: string;
-  breed: string;
+  coat: string;
+  gender: string;
   color: string;
 }

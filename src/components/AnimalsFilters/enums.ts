@@ -1,5 +1,13 @@
-export enum AnimalFilterType {
+export enum RawFilterName {
   TYPE = 'type',
-  BREED = 'breed',
+  COLORS = 'colors',
+  COATS = 'coats',
+  GENDERS = 'genders',
+}
+
+export enum AnimalFilterQuery {
+  TYPE = 'type',
   COLOR = 'color',
+  COAT = 'coat',
+  GENDER = 'gender',
 }

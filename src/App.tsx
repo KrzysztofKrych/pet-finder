@@ -19,7 +19,7 @@ function App() {
   useEffect(() => {
     handleGetAnimals();
     handleGetAnimalsTypes();
-  }, [handleGetAnimalsTypes, handleGetAnimalsTypes]);
+  }, [handleGetAnimals, handleGetAnimalsTypes]);
   return (
     <>
       <AnimalsCardContainer animals={animals} isFetching={isFetching} />
