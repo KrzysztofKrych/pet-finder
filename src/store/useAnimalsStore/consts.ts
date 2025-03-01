@@ -7,4 +7,5 @@ export const DEFAULT_ANIMALS_STATE = {
   },
   currentPage: 1,
   totalPages: 0,
+  isFetching: false,
 };

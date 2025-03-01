@@ -12,6 +12,7 @@ function App() {
     currentPage,
     handleSetCurrentPage,
     totalPages,
+    isFetching,
   } = useAnimalsStore();
 
   useEffect(() => {
@@ -19,14 +20,16 @@ function App() {
   }, [handleGetAnimals]);
   return (
     <>
-      <AnimalsCardContainer animals={animals} />
-      <Pagination
-        handlePageJump={(newPage) => handleSetCurrentPage(newPage)}
-        currentPage={currentPage}
-        totalPages={totalPages}
-        onClickPrevPage={() => handleSetCurrentPage(currentPage - 1)}
-        onClickNextPage={() => handleSetCurrentPage(currentPage + 1)}
-      />
+      <AnimalsCardContainer animals={animals} isFetching={isFetching} />
+      {!isFetching && (
+        <Pagination
+          handlePageJump={(newPage) => handleSetCurrentPage(newPage)}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onClickPrevPage={() => handleSetCurrentPage(currentPage - 1)}
+          onClickNextPage={() => handleSetCurrentPage(currentPage + 1)}
+        />
+      )}
       <NotificationComponent />
     </>
   );
