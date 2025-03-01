@@ -1,6 +1,7 @@
 import { IAnimal } from '../../api/petFinder/animals/interfaces';
 import { AnimalCard } from '../AnimalCard/AnimalCard';
 import { AnimalCardSkeleton } from '../AnimalCard/AnimalCardSkeleton';
+import { AnimalFilters } from '../AnimalsFilters/AnimalsFilters';
 
 interface IProps {
   animals: IAnimal[];
@@ -12,6 +13,8 @@ export const AnimalsCardContainer = ({ animals, isFetching }: IProps) => (
     <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">
       Adoptable Animals
     </h2>
+
+    <AnimalFilters />
     <div className="flex justify-center">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-center">
         {isFetching

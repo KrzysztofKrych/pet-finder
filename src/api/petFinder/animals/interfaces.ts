@@ -12,6 +12,15 @@ export interface IGetAnimalsResponse {
   animals: IAnimal[];
   pagination: IPagination;
 }
+export interface IGetAnimalsTypesResponse {
+  types: IAnimalType[];
+}
+
+export interface IAnimalType {
+  name: string;
+  coats: string[];
+  colors: string[];
+}
 
 export interface IAnimal {
   id: number;

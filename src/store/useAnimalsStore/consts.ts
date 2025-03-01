@@ -1,5 +1,6 @@
 export const DEFAULT_ANIMALS_STATE = {
   animals: [],
+  animalsTypes: [],
   filters: {
     breed: '',
     color: '',
@@ -7,5 +8,6 @@ export const DEFAULT_ANIMALS_STATE = {
   },
   currentPage: 1,
   totalPages: 0,
-  isFetching: false,
+  isFetchingAnimals: false,
+  isFetchingAnimalsTypes: false,
 };
