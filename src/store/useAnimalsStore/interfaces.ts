@@ -8,6 +8,7 @@ export interface AnimalsState {
   filters: IAnimalFilters;
   currentPage: number;
   totalPages: number;
+  isFetching: boolean;
 
   handleGetAnimals: () => void;
   handleSetCurrentPage: (currentPage: number) => void;
