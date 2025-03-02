@@ -14,10 +14,13 @@ export interface AnimalsState {
   totalPages: number;
   isFetchingAnimals: boolean;
   isFetchingAnimalsTypes: boolean;
+  favouriteAnimalsId: number[];
 
   handleGetAnimals: () => void;
   handleGetAnimalsTypes: () => void;
   handleSetCurrentPage: (currentPage: number) => void;
   handleChangeFilter: (type: AnimalFilterQuery, value: string) => void;
   handleRemoveFilter: (key: string) => void;
+  handleSetFavouriteAnimalsIds: () => void;
+  handleOnClickFavouriteAnimal: (id: number) => void;
 }

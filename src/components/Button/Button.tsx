@@ -2,16 +2,17 @@ import { ButtonVariant } from './enums';
 import { BUTTON_VARIANTS } from './variants';
 
 interface IProps {
-  text: string;
+  children: React.ReactNode;
   variant: ButtonVariant;
   onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  className?: string;
 }
 
-export const Button = ({ text, variant, onClick }: IProps) => (
+export const Button = ({ children, variant, onClick, className }: IProps) => (
   <button
-    className={`${BUTTON_VARIANTS[variant]} cursor-pointer`}
+    className={`${BUTTON_VARIANTS[variant]} ${className} cursor-pointer`}
     onClick={onClick}
   >
-    {text}
+    {children}
   </button>
 );

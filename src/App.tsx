@@ -14,12 +14,14 @@ function App() {
     handleSetCurrentPage,
     totalPages,
     isFetchingAnimals: isFetching,
+    handleSetFavouriteAnimalsIds,
   } = useAnimalsStore();
 
   useEffect(() => {
     handleGetAnimals();
     handleGetAnimalsTypes();
-  }, [handleGetAnimals, handleGetAnimalsTypes]);
+    handleSetFavouriteAnimalsIds();
+  }, [handleGetAnimals, handleGetAnimalsTypes, handleSetFavouriteAnimalsIds]);
   return (
     <>
       <AnimalsCardContainer animals={animals} isFetching={isFetching} />
