@@ -2,11 +2,13 @@ import { env } from '../../../configs/envConfig/envConfig';
 import { PetFinderUrls } from '../enums';
 import { getAccessToken } from '../auth/accessToken';
 import { IAnimalFilters, IGetAnimalsResponse } from './interfaces';
+import { useNotificationStore } from '../../../store/useNotificationStore/useNotificationStore';
+import { NotificationComponentVariant } from '../../../components/NotificationComponent/enums';
 
 export const getAnimals = async (
   filters: IAnimalFilters,
   page: number,
-  options?: { signal?: AbortSignal } // Accept signal
+  options?: { signal?: AbortSignal }
 ): Promise<IGetAnimalsResponse> => {
   const queryString = createSearchParams(filters, page);
   try {
@@ -34,6 +36,10 @@ export const getAnimals = async (
     return data;
   } catch (error) {
     console.error('Error fetching animals:', error);
+    useNotificationStore.getState().handleOpenNotification({
+      message: 'Oops! We couldn’t load the pets. Please try again later.',
+      variant: NotificationComponentVariant.ERROR,
+    });
     return {
       pagination: {
         count_per_page: 0,
@@ -43,7 +49,6 @@ export const getAnimals = async (
       },
       animals: [],
     };
-    //TODO show error in dialog/notificationbar
   }
 };
 
