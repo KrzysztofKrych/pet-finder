@@ -18,9 +18,12 @@ function App() {
   } = useAnimalsStore();
 
   useEffect(() => {
-    handleGetAnimals();
-    handleGetAnimalsTypes();
+    const getAsyncData = async () => {
+      await handleGetAnimals();
+      await handleGetAnimalsTypes();
+    };
     handleSetFavouriteAnimalsIds();
+    getAsyncData();
   }, [handleGetAnimals, handleGetAnimalsTypes, handleSetFavouriteAnimalsIds]);
   return (
     <>
