@@ -5,7 +5,8 @@ import { IAnimalFilters, IGetAnimalsResponse } from './interfaces';
 
 export const getAnimals = async (
   filters: IAnimalFilters,
-  page: number
+  page: number,
+  options?: { signal?: AbortSignal } // Accept signal
 ): Promise<IGetAnimalsResponse> => {
   const queryString = createSearchParams(filters, page);
   try {
@@ -16,6 +17,7 @@ export const getAnimals = async (
         headers: {
           Authorization: `Bearer ${token}`,
         },
+        signal: options?.signal,
       }
     );
 
