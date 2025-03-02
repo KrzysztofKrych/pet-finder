@@ -108,4 +108,27 @@ export const useAnimalsStore = create<AnimalsState>((set, get) => ({
     set(() => ({ favouriteAnimalsId: updatedFavourites }));
     setLocalStorageValue(LocalStorageKey.favouriteAnimalsId, updatedFavourites);
   },
+  handleClearAllFilters: async () => {
+    const { animals, pagination } = await getAnimals(
+      DEFAULT_ANIMALS_FILTERS,
+      1
+    );
+    set(() => ({
+      animals,
+      totalPages: pagination.total_pages,
+      filters: DEFAULT_ANIMALS_FILTERS,
+      isFetchingAnimals: false,
+      selectedType: DEFAULT_ANIMAL_TYPE,
+    }));
+  },
+  handleGetRandomAnimal: async () => {
+    set(() => ({ isRandomAnimalFetching: true }));
+    const state = get();
+    const randomPage = Math.floor(Math.random() * state.totalPages) + 1;
+    const randomAnimalIndex = Math.floor(Math.random() * 20);
+    const { animals } = await getAnimals(DEFAULT_ANIMALS_FILTERS, randomPage);
+    const animal = animals[randomAnimalIndex];
+    window.open(animal.url, '_blank');
+    set(() => ({ isRandomAnimalFetching: false }));
+  },
 }));

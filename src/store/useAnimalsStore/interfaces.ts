@@ -14,6 +14,7 @@ export interface AnimalsState {
   totalPages: number;
   isFetchingAnimals: boolean;
   isFetchingAnimalsTypes: boolean;
+  isRandomAnimalFetching: boolean;
   favouriteAnimalsId: number[];
 
   handleGetAnimals: () => void;
@@ -22,4 +23,6 @@ export interface AnimalsState {
   handleChangeFilter: (type: AnimalFilterQuery, value: string) => void;
   handleSetFavouriteAnimalsIds: () => void;
   handleOnClickFavouriteAnimal: (id: number) => void;
+  handleClearAllFilters: () => void;
+  handleGetRandomAnimal: () => void;
 }
