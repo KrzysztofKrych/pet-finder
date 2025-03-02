@@ -3,4 +3,7 @@ export enum ButtonVariant {
   SECONDARY = 'SECONDARY',
   ERROR = 'ERROR',
   GHOST = 'GHOST',
+  PILL = 'PILL',
+  PILL_CLEAR = 'PILL_CLEAR',
+  GRADIENT = 'GRADIENT',
 }
