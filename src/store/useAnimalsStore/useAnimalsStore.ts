@@ -92,27 +92,6 @@ export const useAnimalsStore = create<AnimalsState>((set, get) => ({
       selectedType,
     }));
   },
-  handleRemoveFilter: async (key: string) => {
-    const state = get();
-    const updatedFilters = {
-      ...state.filters,
-      [key]: '',
-    };
-
-    set(() => ({ isFetchingAnimals: true, filters: updatedFilters }));
-
-    const { animals, pagination } = await getAnimals(
-      updatedFilters,
-      state.currentPage
-    );
-
-    set(() => ({
-      animals,
-      totalPages: pagination.total_pages,
-      filters: updatedFilters,
-      isFetchingAnimals: false,
-    }));
-  },
   handleSetFavouriteAnimalsIds: () => {
     const favouriteAnimalsId = JSON.parse(
       getLocalStorageValue(LocalStorageKey.favouriteAnimalsId) || '[]'
