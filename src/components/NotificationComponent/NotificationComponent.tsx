@@ -32,8 +32,9 @@ export const NotificationComponent = () => {
       <Button
         onClick={handleCloseNotification}
         variant={ButtonVariant.SECONDARY}
-        text="Close"
-      />
+      >
+        Close
+      </Button>
     </div>
   );
 };

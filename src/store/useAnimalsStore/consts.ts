@@ -24,4 +24,5 @@ export const DEFAULT_ANIMALS_STATE = {
   totalPages: 0,
   isFetchingAnimals: false,
   isFetchingAnimalsTypes: false,
+  favouriteAnimalsId: [],
 };

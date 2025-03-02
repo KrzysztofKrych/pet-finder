@@ -9,6 +9,11 @@ import { getAnimals } from '../../api/petFinder/animals/getAnimals';
 import { AnimalFilterQuery } from '../../components/AnimalsFilters/enums';
 import { getAnimalsTypes } from '../../api/petFinder/animals/getAnimalsTypes';
 import { IAnimalType } from '../../api/petFinder/animals/interfaces';
+import { LocalStorageKey } from '../../services/localStorage/enums';
+import {
+  getLocalStorageValue,
+  setLocalStorageValue,
+} from '../../services/localStorage/localStorage';
 
 export const useAnimalsStore = create<AnimalsState>((set, get) => ({
   ...DEFAULT_ANIMALS_STATE,
@@ -107,5 +112,21 @@ export const useAnimalsStore = create<AnimalsState>((set, get) => ({
       filters: updatedFilters,
       isFetchingAnimals: false,
     }));
+  },
+  handleSetFavouriteAnimalsIds: () => {
+    const favouriteAnimalsId = JSON.parse(
+      getLocalStorageValue(LocalStorageKey.favouriteAnimalsId) || '[]'
+    );
+
+    set(() => ({ favouriteAnimalsId }));
+  },
+  handleOnClickFavouriteAnimal: (id: number) => {
+    const state = get();
+    const isFavourite = state.favouriteAnimalsId.includes(id);
+    const updatedFavourites = isFavourite
+      ? state.favouriteAnimalsId.filter((loopedId) => loopedId !== id)
+      : [...state.favouriteAnimalsId, id];
+    set(() => ({ favouriteAnimalsId: updatedFavourites }));
+    setLocalStorageValue(LocalStorageKey.favouriteAnimalsId, updatedFavourites);
   },
 }));
