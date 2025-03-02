@@ -35,8 +35,8 @@ export const getAnimals = async (
 
     return data;
   } catch (error) {
-    console.error('Error fetching animals:', error);
-    useNotificationStore.getState().handleOpenNotification({
+    const isAbortError = error instanceof DOMException && error.name === 'AbortError'
+    !isAbortError && useNotificationStore.getState().handleOpenNotification({
       message: 'Oops! We couldn’t load the pets. Please try again later.',
       variant: NotificationComponentVariant.ERROR,
     });
