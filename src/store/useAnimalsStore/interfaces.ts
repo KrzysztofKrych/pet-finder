@@ -20,7 +20,6 @@ export interface AnimalsState {
   handleGetAnimalsTypes: () => void;
   handleSetCurrentPage: (currentPage: number) => void;
   handleChangeFilter: (type: AnimalFilterQuery, value: string) => void;
-  handleRemoveFilter: (key: string) => void;
   handleSetFavouriteAnimalsIds: () => void;
   handleOnClickFavouriteAnimal: (id: number) => void;
 }
