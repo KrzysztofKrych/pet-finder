@@ -26,4 +26,5 @@ export const DEFAULT_ANIMALS_STATE = {
   isFetchingAnimalsTypes: false,
   isRandomAnimalFetching: false,
   favouriteAnimalsId: [],
+  abortController: null,
 };

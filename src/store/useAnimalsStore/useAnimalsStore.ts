@@ -14,6 +14,7 @@ import {
   getLocalStorageValue,
   setLocalStorageValue,
 } from '../../services/localStorage/localStorage';
+import debounce from 'lodash.debounce';
 
 export const useAnimalsStore = create<AnimalsState>((set, get) => ({
   ...DEFAULT_ANIMALS_STATE,
@@ -59,39 +60,59 @@ export const useAnimalsStore = create<AnimalsState>((set, get) => ({
       isFetchingAnimals: false,
     }));
   },
+  handleChangeFilter: debounce(
+    async (type: AnimalFilterQuery, value: string) => {
+      const state = get();
+      const abortController = state.abortController;
+      if (abortController) {
+        abortController.abort();
+      }
+      const newController = new AbortController();
+      set({ abortController: newController });
 
-  handleChangeFilter: async (type: AnimalFilterQuery, value: string) => {
-    const state = get();
-    const isTypeChanged =
-      type === AnimalFilterQuery.TYPE && state.selectedType.name !== value;
+      const isTypeChanged =
+        type === AnimalFilterQuery.TYPE && state.selectedType.name !== value;
 
-    const updatedFilters = isTypeChanged
-      ? { ...DEFAULT_ANIMALS_FILTERS, type: value }
-      : {
-          ...state.filters,
-          [type]: value,
-        };
+      const updatedFilters = isTypeChanged
+        ? { ...DEFAULT_ANIMALS_FILTERS, type: value }
+        : { ...state.filters, [type]: value };
 
-    set(() => ({ isFetchingAnimals: true, filters: updatedFilters }));
+      set(() => ({ isFetchingAnimals: true, filters: updatedFilters }));
 
-    const { animals, pagination } = await getAnimals(
-      updatedFilters,
-      state.currentPage
-    );
-    const selectedType: IAnimalType =
-      type === AnimalFilterQuery.TYPE
-        ? state.animalsTypes.find((loopedType) => loopedType.name === value) ||
-          DEFAULT_ANIMAL_TYPE
-        : state.selectedType;
+      try {
+        const { animals, pagination } = await getAnimals(
+          updatedFilters,
+          state.currentPage,
+          { signal: newController.signal }
+        );
 
-    set(() => ({
-      animals,
-      totalPages: pagination.total_pages,
-      filters: updatedFilters,
-      isFetchingAnimals: false,
-      selectedType,
-    }));
-  },
+        if (newController.signal.aborted) return;
+
+        const selectedType: IAnimalType =
+          type === AnimalFilterQuery.TYPE
+            ? state.animalsTypes.find(
+                (loopedType) => loopedType.name === value
+              ) || DEFAULT_ANIMAL_TYPE
+            : state.selectedType;
+
+        set(() => ({
+          animals,
+          totalPages: pagination.total_pages,
+          filters: updatedFilters,
+          isFetchingAnimals: false,
+          selectedType,
+        }));
+      } catch (error) {
+        if (error instanceof Error) {
+          console.error(error.message);
+        } else {
+          console.error('An unknown error occurred', error);
+        }
+        console.error('Error fetching animals:', error);
+      }
+    },
+    300
+  ),
   handleSetFavouriteAnimalsIds: () => {
     const favouriteAnimalsId = JSON.parse(
       getLocalStorageValue(LocalStorageKey.favouriteAnimalsId) || '[]'
@@ -109,17 +130,42 @@ export const useAnimalsStore = create<AnimalsState>((set, get) => ({
     setLocalStorageValue(LocalStorageKey.favouriteAnimalsId, updatedFavourites);
   },
   handleClearAllFilters: async () => {
-    const { animals, pagination } = await getAnimals(
-      DEFAULT_ANIMALS_FILTERS,
-      1
-    );
-    set(() => ({
-      animals,
-      totalPages: pagination.total_pages,
+    const state = get();
+    const abortController = state.abortController;
+    if (abortController) {
+      abortController.abort();
+    }
+    const newController = new AbortController();
+    set({
+      abortController: newController,
+      isFetchingAnimals: true,
       filters: DEFAULT_ANIMALS_FILTERS,
-      isFetchingAnimals: false,
-      selectedType: DEFAULT_ANIMAL_TYPE,
-    }));
+    });
+
+    try {
+      const { animals, pagination } = await getAnimals(
+        DEFAULT_ANIMALS_FILTERS,
+        1,
+        { signal: newController.signal }
+      );
+      if (newController.signal.aborted) return;
+
+      set({
+        animals,
+        totalPages: pagination.total_pages,
+        filters: DEFAULT_ANIMALS_FILTERS,
+        isFetchingAnimals: false,
+        selectedType: DEFAULT_ANIMAL_TYPE,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.error('An unknown error occurred', error);
+      }
+      console.error('Error fetching animals:', error);
+      set({ isFetchingAnimals: false });
+    }
   },
   handleGetRandomAnimal: async () => {
     set(() => ({ isRandomAnimalFetching: true }));

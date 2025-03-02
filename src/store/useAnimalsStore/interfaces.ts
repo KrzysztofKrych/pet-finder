@@ -16,6 +16,7 @@ export interface AnimalsState {
   isFetchingAnimalsTypes: boolean;
   isRandomAnimalFetching: boolean;
   favouriteAnimalsId: number[];
+  abortController: AbortController | null;
 
   handleGetAnimals: () => void;
   handleGetAnimalsTypes: () => void;
