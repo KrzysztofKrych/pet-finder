@@ -20,45 +20,75 @@ export const useAnimalsStore = create<AnimalsState>((set, get) => ({
   ...DEFAULT_ANIMALS_STATE,
 
   handleGetAnimals: async () => {
-    set(() => ({ isFetchingAnimals: true }));
+    try {
+      set(() => ({ isFetchingAnimals: true }));
 
-    const state = get();
-    const { animals, pagination } = await getAnimals(
-      state.filters,
-      state.currentPage
-    );
+      const state = get();
+      const { animals, pagination } = await getAnimals(
+        state.filters,
+        state.currentPage
+      );
 
-    set(() => ({
-      animals,
-      totalPages: pagination.total_pages,
-      isFetchingAnimals: false,
-    }));
+      set(() => ({
+        animals,
+        totalPages: pagination.total_pages,
+        isFetchingAnimals: false,
+      }));
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.error('An unknown error occurred', error);
+      }
+      console.error('Error fetching animals:', error);
+      set(() => ({ isFetchingAnimals: false }));
+    }
   },
   handleGetAnimalsTypes: async () => {
-    set(() => ({ isFetchingAnimalsTypes: true }));
+    try {
+      set(() => ({ isFetchingAnimalsTypes: true }));
 
-    const { types } = await getAnimalsTypes();
+      const { types } = await getAnimalsTypes();
 
-    set(() => ({
-      animalsTypes: types,
-      isFetchingAnimalsTypes: false,
-    }));
+      set(() => ({
+        animalsTypes: types,
+        isFetchingAnimalsTypes: false,
+      }));
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.error('An unknown error occurred', error);
+      }
+      console.error('Error fetching animals:', error);
+      set(() => ({ isFetchingAnimalsTypes: false }));
+    }
   },
   handleSetCurrentPage: async (currentPage: number) => {
-    set(() => ({ isFetchingAnimals: true }));
+    try {
+      set(() => ({ isFetchingAnimals: true }));
 
-    const state = get();
-    const { animals, pagination } = await getAnimals(
-      state.filters,
-      currentPage
-    );
+      const state = get();
+      const { animals, pagination } = await getAnimals(
+        state.filters,
+        currentPage
+      );
 
-    set(() => ({
-      currentPage,
-      animals,
-      totalPages: pagination.total_pages,
-      isFetchingAnimals: false,
-    }));
+      set(() => ({
+        currentPage,
+        animals,
+        totalPages: pagination.total_pages,
+        isFetchingAnimals: false,
+      }));
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.error('An unknown error occurred', error);
+      }
+      console.error('Error fetching animals:', error);
+      set(() => ({ isFetchingAnimals: false }));
+    }
   },
   handleChangeFilter: debounce(
     async (type: AnimalFilterQuery, value: string) => {
@@ -108,6 +138,7 @@ export const useAnimalsStore = create<AnimalsState>((set, get) => ({
         } else {
           console.error('An unknown error occurred', error);
         }
+        set(() => ({ isFetchingAnimals: false }));
         console.error('Error fetching animals:', error);
       }
     },
@@ -168,13 +199,23 @@ export const useAnimalsStore = create<AnimalsState>((set, get) => ({
     }
   },
   handleGetRandomAnimal: async () => {
-    set(() => ({ isRandomAnimalFetching: true }));
-    const state = get();
-    const randomPage = Math.floor(Math.random() * state.totalPages) + 1;
-    const randomAnimalIndex = Math.floor(Math.random() * 20);
-    const { animals } = await getAnimals(DEFAULT_ANIMALS_FILTERS, randomPage);
-    const animal = animals[randomAnimalIndex];
-    window.open(animal.url, '_blank');
-    set(() => ({ isRandomAnimalFetching: false }));
+    try {
+      set(() => ({ isRandomAnimalFetching: true }));
+      const state = get();
+      const randomPage = Math.floor(Math.random() * state.totalPages) + 1;
+      const randomAnimalIndex = Math.floor(Math.random() * 20);
+      const { animals } = await getAnimals(DEFAULT_ANIMALS_FILTERS, randomPage);
+      const animal = animals[randomAnimalIndex];
+      window.open(animal.url, '_blank');
+      set(() => ({ isRandomAnimalFetching: false }));
+    } catch (error) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.error('An unknown error occurred', error);
+      }
+      console.error('Error fetching animals:', error);
+      set({ isRandomAnimalFetching: false });
+    }
   },
 }));
