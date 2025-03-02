@@ -107,7 +107,18 @@ export const useAnimalsStore = create<AnimalsState>((set, get) => ({
         ? { ...DEFAULT_ANIMALS_FILTERS, type: value }
         : { ...state.filters, [type]: value };
 
-      set(() => ({ isFetchingAnimals: true, filters: updatedFilters }));
+      const selectedType: IAnimalType =
+        type === AnimalFilterQuery.TYPE
+          ? state.animalsTypes.find(
+              (loopedType) => loopedType.name === value
+            ) || DEFAULT_ANIMAL_TYPE
+          : state.selectedType;
+
+      set(() => ({
+        isFetchingAnimals: true,
+        filters: updatedFilters,
+        selectedType,
+      }));
 
       try {
         const { animals, pagination } = await getAnimals(
@@ -117,13 +128,6 @@ export const useAnimalsStore = create<AnimalsState>((set, get) => ({
         );
 
         if (newController.signal.aborted) return;
-
-        const selectedType: IAnimalType =
-          type === AnimalFilterQuery.TYPE
-            ? state.animalsTypes.find(
-                (loopedType) => loopedType.name === value
-              ) || DEFAULT_ANIMAL_TYPE
-            : state.selectedType;
 
         set(() => ({
           animals,

@@ -35,11 +35,14 @@ export const getAnimals = async (
 
     return data;
   } catch (error) {
-    const isAbortError = error instanceof DOMException && error.name === 'AbortError'
-    !isAbortError && useNotificationStore.getState().handleOpenNotification({
-      message: 'Oops! We couldn’t load the pets. Please try again later.',
-      variant: NotificationComponentVariant.ERROR,
-    });
+    const isAbortError =
+      error instanceof DOMException && error.name === 'AbortError';
+    if (!isAbortError) {
+      useNotificationStore.getState().handleOpenNotification({
+        message: 'Oops! We couldn’t load the pets. Please try again later.',
+        variant: NotificationComponentVariant.ERROR,
+      });
+    }
     return {
       pagination: {
         count_per_page: 0,
