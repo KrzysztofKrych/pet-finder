@@ -13,7 +13,7 @@ export const Button = ({
   children,
   variant,
   onClick,
-  className,
+  className = '',
   isDisabled,
 }: IProps) => (
   <button
