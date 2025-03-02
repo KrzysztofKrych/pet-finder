@@ -8,16 +8,18 @@ import { Pagination } from './components/Pagination/Pagination';
 function App() {
   const {
     handleGetAnimals,
+    handleGetAnimalsTypes,
     animals,
     currentPage,
     handleSetCurrentPage,
     totalPages,
-    isFetching,
+    isFetchingAnimals: isFetching,
   } = useAnimalsStore();
 
   useEffect(() => {
     handleGetAnimals();
-  }, [handleGetAnimals]);
+    handleGetAnimalsTypes();
+  }, [handleGetAnimals, handleGetAnimalsTypes]);
   return (
     <>
       <AnimalsCardContainer animals={animals} isFetching={isFetching} />

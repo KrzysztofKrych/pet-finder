@@ -12,6 +12,16 @@ export interface IGetAnimalsResponse {
   animals: IAnimal[];
   pagination: IPagination;
 }
+export interface IGetAnimalsTypesResponse {
+  types: IAnimalType[];
+}
+
+export interface IAnimalType {
+  name: string;
+  coats: string[];
+  colors: string[];
+  genders: string[];
+}
 
 export interface IAnimal {
   id: number;
@@ -99,6 +109,7 @@ export interface IPhoto {
 
 export interface IAnimalFilters {
   type: string;
-  breed: string;
+  coat: string;
+  gender: string;
   color: string;
 }
